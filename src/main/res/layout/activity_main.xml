@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://android.com"
+    xmlns:tools="http://android.com"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F0F2F5"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white"
+        android:hint="Search Movies, Drama, News or Videos..."
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textSize="16sp"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_marginBottom="12dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btnMovies"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="MOVIES"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:backgroundTint="#E50914"
+            android:textColor="@android:color/white"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/btnDrama"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="DRAMA"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:backgroundTint="#008080"
+            android:textColor="@android:color/white"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/btnNews"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="NEWS"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:backgroundTint="#FF8C00"
+            android:textColor="@android:color/white"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/btnYouTube"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="YOUTUBE"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:backgroundTint="#FF0000"
+            android:textColor="@android:color/white"
+            android:focusable="true"
+            android:clickable="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/meshStatusBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#1E1E24"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp">
+        
+        <TextView
+            android:id="@+id/txtMeshStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Asmani Mesh: Active Network"
+            android:textColor="#00FF00"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTimeline"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:focusable="true"
+        android:clickable="true" />
+
+</LinearLayout>
