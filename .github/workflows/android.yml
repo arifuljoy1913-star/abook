@@ -16,51 +16,27 @@ jobs:
         distribution: 'temurin'
     - name: Force Build APK
       run: |
-        mkdir -p app/src/main/java/com/smartvillage/asmanimesh/ultimate
-        echo "rootProject.name = 'abook'" > settings.gradle
+        # Force link root to app module to fix Task not found error
+        echo "include ':app'" > settings.gradle
         echo "plugins { id 'com.android.application' version '8.2.2' apply false }" > build.gradle
-        cat << 'EOF' > app/build.gradle
-        plugins { id 'com.android.application' }
-        android {
-            namespace 'com.smartvillage.asmanimesh.ultimate'
-            compileSdk 34
-            defaultConfig {
-                applicationId "com.smartvillage.asmanimesh.ultimate"
-                minSdk 24
-                targetSdk 34
-                versionCode 1
-                versionName "1.0"
-            }
-        }
-        dependencies {
-            implementation 'androidx.appcompat:appcompat:1.6.1'
-            implementation 'com.google.android.gms:play-services-ads:23.0.0'
-        }
+        
+        # Inject standard gradle wrapper files automatically
+        mkdir -p gradle/wrapper
+        cat << 'EOF' > gradle/wrapper/gradle-wrapper.properties
+        distributionBase=GRADLE_USER_HOME
+        distributionPath=wrapper/dists
+        distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-bin.zip
+        zipStoreBase=GRADLE_USER_HOME
+        zipStorePath=wrapper/dists
         EOF
-        cat << 'EOF' > app/src/main/AndroidManifest.xml
-        <manifest xmlns:android="http://android.com">
-            <application android:theme="@style/Theme.AppCompat.NoActionBar">
-                <activity android:name=".MainActivity" android:exported="true">
-                    <intent-filter>
-                        <action android:name="android.intent.action.MAIN" />
-                        <category android:name="android.category.LAUNCHER" />
-                    </intent-filter>
-                </activity>
-            </application>
-        </manifest>
+        
+        cat << 'EOF' > gradlew
+        #!/usr/bin/env sh
+        exec gradle "$@"
         EOF
-        cat << 'EOF' > app/src/main/java/com/smartvillage/asmanimesh/ultimate/MainActivity.java
-        package com.smartvillage.asmanimesh.ultimate;
-        import android.os.Bundle;
-        import androidx.appcompat.app.AppCompatActivity;
-        public class MainActivity extends AppCompatActivity {
-            @Override
-            protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-            }
-        }
-        EOF
-        gradle assembleDebug --no-daemon
+        chmod +x gradlew
+        
+        ./gradlew :app:assembleDebug --no-daemon
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
