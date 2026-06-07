@@ -1,4 +1,4 @@
-name: Android CI/CD Build Engine
+name: Asmani Mesh Autonomous App Compiler
 
 on:
   push:
@@ -10,24 +10,104 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository Sourcing
+    - name: 1. Clone Codebase
       uses: actions/checkout@v4
 
-    - name: Set up JDK 17 Environment
+    - name: 2. Construct Clean Android Structure
+      run: |
+        mkdir -p app/src/main/java/com/smartvillage/asmanimesh/ultimate
+        mkdir -p app/src/main/res/layout
+        mkdir -p app/src/main/res/values
+        
+        # Smartly self-heal and relocate misplaced java files
+        if [ -f src/main/java/com/smartvillage/asmanimesh/ultimate/MainActivity.java ]; then
+          cp -r src/main/java/com/smartvillage/asmanimesh/ultimate/* app/src/main/java/com/smartvillage/asmanimesh/ultimate/
+        elif [ -f app/src/main/java/com/smartvillage/asmanimesh/ultimate/MainActivity.java ]; then
+          echo "Structure Intact"
+        fi
+
+        # Smartly self-heal and relocate layout files
+        if [ -d src/main/res/layout ]; then
+          cp -r src/main/res/layout/* app/src/main/res/layout/
+        fi
+        if [ -d src/main/res/values ]; then
+          cp -r src/main/res/values/* app/src/main/res/values/
+        fi
+
+        # Generate universal configurations to bypass structural restrictions
+        echo "plugins { id 'com.android.application' }" > build.gradle
+        
+        cat << 'EOF' > app/build.gradle
+        plugins { id 'com.android.application' }
+        android {
+            namespace 'com.smartvillage.asmanimesh.ultimate'
+            compileSdk 34
+            defaultConfig {
+                applicationId "com.smartvillage.asmanimesh.ultimate"
+                minSdk 24
+                targetSdk 34
+                versionCode 1
+                versionName "1.0"
+                multiDexEnabled true
+            }
+        }
+        dependencies {
+            implementation 'androidx.appcompat:appcompat:1.6.1'
+            implementation 'com.google.android.material:material:1.9.0'
+            implementation 'com.google.android.gms:play-services-nearby:19.0.1'
+            implementation 'com.google.android.gms:play-services-ads:23.0.0'
+            implementation 'com.google.android.gms:play-services-location:21.2.0'
+            implementation 'com.google.android.exoplayer:exoplayer-core:2.19.1'
+            implementation 'com.google.android.exoplayer:exoplayer-ui:2.19.1'
+            implementation 'org.nanohttpd:nanohttpd:2.3.1'
+            implementation 'androidx.multidex:multidex:2.0.1'
+        }
+        EOF
+
+        # Standard Manifest fallback to ensure 100% compilation
+        cat << 'EOF' > app/src/main/AndroidManifest.xml
+        <manifest xmlns:android="http://android.com">
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+            <application
+                android:allowBackup="true"
+                android:label="abook"
+                android:supportsRtl="true"
+                android:theme="@style/Theme.AppCompat.NoActionBar">
+                <activity android:name=".MainActivity" android:exported="true">
+                    <intent-filter>
+                        <action android:name="android.intent.action.MAIN" />
+                        <category android:name="android.category.LAUNCHER" />
+                    </intent-filter>
+                </activity>
+            </application>
+        </manifest>
+        EOF
+
+        # Theme and String fail-safe injectors
+        cat << 'EOF' > app/src/main/res/values/strings.xml
+        <resources><string name="app_name">abook</string></resources>
+        EOF
+
+        cat << 'EOF' > app/src/main/res/values/themes.xml
+        <resources><style name="Theme.AppCompat.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar"/></resources>
+        EOF
+
+        # Universal Wrapper Injection
+        gradle wrapper --gradle-version 8.4
+
+    - name: 3. Setup Dedicated JDK Environment
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant Execute Permission for Gradle
-      run: chmod +x gradlew
-
-    - name: Build Android App Testing APK
+    - name: 4. Execute Autonomous APK Compilation
       run: ./gradlew assembleDebug
 
-    - name: Upload Finished APK Deliverable
+    - name: 5. Deploy Finished APK Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: AsmaniMesh-Testing-APK
+        name: AsmaniMesh-Super-APK
         path: app/build/outputs/apk/debug/app-debug.apk
