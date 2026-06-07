@@ -1,41 +1,24 @@
-
-name: Asmani Mesh Autonomous App Compiler
-
+name: Asmani Mesh Engine Build
 on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: 1. Clone Codebase
+    - name: Clone Code
       uses: actions/checkout@v4
-
-    - name: 2. Construct Clean Android Structure
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Force Build APK
       run: |
-        # Forcefully build a brand new official Android blueprint in runtime
-        rm -rf app src build.gradle settings.gradle gradlew gradle
-        
         mkdir -p app/src/main/java/com/smartvillage/asmanimesh/ultimate
-        mkdir -p app/src/main/res/layout
-        mkdir -p app/src/main/res/values
-
-        # Inject universal configuration bypassing any file checking
         echo "rootProject.name = 'abook'" > settings.gradle
-        
-        cat << 'EOF' > build.gradle
-        buildscript {
-            repositories { google(); mavenCentral() }
-            dependencies { classpath 'com.android.tools.build:gradle:8.2.2' }
-        }
-        allprojects {
-            repositories { google(); mavenCentral() }
-        }
-        EOF
-        
+        echo "plugins { id 'com.android.application' version '8.2.2' apply false }" > build.gradle
         cat << 'EOF' > app/build.gradle
         plugins { id 'com.android.application' }
         android {
@@ -47,75 +30,16 @@ jobs:
                 targetSdk 34
                 versionCode 1
                 versionName "1.0"
-                multiDexEnabled true
             }
         }
         dependencies {
             implementation 'androidx.appcompat:appcompat:1.6.1'
-            implementation 'com.google.android.material:material:1.9.0'
-            implementation 'com.google.android.gms:play-services-nearby:19.0.1'
             implementation 'com.google.android.gms:play-services-ads:23.0.0'
-            implementation 'com.google.android.gms:play-services-location:21.2.0'
-            implementation 'com.google.android.exoplayer:exoplayer-core:2.19.1'
-            implementation 'com.google.android.exoplayer:exoplayer-ui:2.19.1'
-            implementation 'org.nanohttpd:nanohttpd:2.3.1'
-            implementation 'androidx.multidex:multidex:2.0.1'
         }
         EOF
-
-        # Master Java মগজ ফাইল - Your exact conditions integrated securely
-        cat << 'EOF' > app/src/main/java/com/smartvillage/asmanimesh/ultimate/MainActivity.java
-        package com.smartvillage.asmanimesh.ultimate;
-        import android.os.Bundle;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.recyclerview.widget.LinearLayoutManager;
-        import androidx.recyclerview.widget.RecyclerView;
-        import androidx.work.PeriodicWorkRequest;
-        import androidx.work.WorkManager;
-        import java.util.concurrent.TimeUnit;
-        public class MainActivity extends AppCompatActivity {
-            private EditText searchBar;
-            private Button btnMovies, btnDrama, btnNews, btnYouTube;
-            private RecyclerView recyclerViewTimeline;
-            @Override
-            protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                setContentView(R.layout.activity_main);
-                searchBar = findViewById(R.id.searchBar);
-                btnMovies = findViewById(R.id.btnMovies);
-                btnDrama = findViewById(R.id.btnDrama);
-                btnNews = findViewById(R.id.btnNews);
-                btnYouTube = findViewById(R.id.btnYouTube);
-                recyclerViewTimeline = findViewById(R.id.recyclerViewTimeline);
-                if (recyclerViewTimeline != null) {
-                    recyclerViewTimeline.setLayoutManager(new LinearLayoutManager(this));
-                }
-                initAsmaniOmniAdaptiveEngine();
-            }
-            private void initAsmaniOmniAdaptiveEngine() {
-                PeriodicWorkRequest omniAdaptiveRequest = new PeriodicWorkRequest.Builder(
-                        AsmaniOmniSecurityWorker.class, 1, TimeUnit.HOURS).build();
-                WorkManager.getInstance(this).enqueue(omniAdaptiveRequest);
-            }
-            public static class AsmaniOmniSecurityWorker extends androidx.work.Worker {
-                public AsmaniOmniSecurityWorker(android.content.Context c, androidx.work.WorkerParameters p) { super(c, p); }
-                @Override
-                public androidx.work.Result doWork() { return androidx.work.Result.success(); }
-            }
-        }
-        EOF
-
-        # Manifest with strict zero-trust permissions
         cat << 'EOF' > app/src/main/AndroidManifest.xml
         <manifest xmlns:android="http://android.com">
-            <uses-permission android:name="android.permission.INTERNET"/>
-            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-            <application
-                android:allowBackup="true"
-                android:label="abook"
-                android:theme="@style/Theme.AppCompat.NoActionBar">
+            <application android:theme="@style/Theme.AppCompat.NoActionBar">
                 <activity android:name=".MainActivity" android:exported="true">
                     <intent-filter>
                         <action android:name="android.intent.action.MAIN" />
@@ -125,48 +49,20 @@ jobs:
             </application>
         </manifest>
         EOF
-
-        # Layout, Strings, and Themes inject
-        cat << 'EOF' > app/src/main/res/layout/activity_main.xml
-        <LinearLayout xmlns:android="http://android.com" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="16dp"><EditText android:id="@+id/searchBar" android:layout_width="match_parent" android:layout_height="50dp" android:hint="Search..."/><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"><Button android:id="@+id/btnMovies" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MOVIES"/><Button android:id="@+id/btnDrama" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DRAMA"/><Button android:id="@+id/btnNews" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="NEWS"/><Button android:id="@+id/btnYouTube" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="YOUTUBE"/></LinearLayout><androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerViewTimeline" android:layout_width="match_parent" android:layout_height="match_parent"/></LinearLayout>
+        cat << 'EOF' > app/src/main/java/com/smartvillage/asmanimesh/ultimate/MainActivity.java
+        package com.smartvillage.asmanimesh.ultimate;
+        import android.os.Bundle;
+        import androidx.appcompat.app.AppCompatActivity;
+        public class MainActivity extends AppCompatActivity {
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+            }
+        }
         EOF
-
-        cat << 'EOF' > app/src/main/res/values/strings.xml
-        <resources><string name="app_name">abook</string></resources>
-        EOF
-
-        cat << 'EOF' > app/src/main/res/values/themes.xml
-        <resources><style name="Theme.AppCompat.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar"/></resources>
-        EOF
-
-        # Injecting native gradle wrap securely
-        mkdir -p gradle/wrapper
-        cat << 'EOF' > gradle/wrapper/gradle-wrapper.properties
-        distributionBase=GRADLE_USER_HOME
-        distributionPath=wrapper/dists
-        distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-bin.zip
-        zipStoreBase=GRADLE_USER_HOME
-        zipStorePath=wrapper/dists
-        EOF
-
-        # Constructing executable runner script
-        cat << 'EOF' > gradlew
-        #!/usr/bin/env sh
-        exec gradle "$@"
-        EOF
-        chmod +x gradlew
-
-    - name: 3. Setup Dedicated JDK Environment
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    - name: 4. Execute Autonomous APK Compilation
-      run: gradle assembleDebug --no-daemon
-
-    - name: 5. Deploy Finished APK Artifact
+        gradle assembleDebug --no-daemon
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: AsmaniMesh-Super-APK
+        name: AsmaniMesh-Testing-APK
         path: app/build/outputs/apk/debug/app-debug.apk
