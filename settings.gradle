@@ -1,4 +1,4 @@
-pluginManagement {
+espluginManagement {
     repositories {
         google()
         mavenCentral()
@@ -10,8 +10,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter() // পুরোনো লাইব্রেরিগুলো ডাউনলোড করার জন্য এটি যুক্ত করা হলো
     }
 }
+
 rootProject.name = "abook"
 include ':app'
