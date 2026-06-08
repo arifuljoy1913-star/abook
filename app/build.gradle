@@ -12,6 +12,7 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -44,46 +45,48 @@ android {
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 
+    // AndroidX Core & Layouts
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.navigation:navigation-fragment:2.7.7'
     implementation 'androidx.navigation:navigation-ui:2.7.7'
 
-    // পুরোনো লাইব্রেরির বদলে নতুন ও সচল লাইব্রেরি বসানো হলো
+    // Google Play Services (Offline Mesh, Location & Security)
     implementation 'com.google.android.gms:play-services-nearby:18.7.0'
     implementation 'com.google.android.gms:play-services-wallet:19.4.0'
     implementation 'com.google.android.gms:play-services-location:21.2.0'
     implementation 'com.google.android.gms:play-services-auth:21.1.1'
     implementation 'com.google.android.gms:play-services-ads:23.0.0'
-
-    // Voice Command API & High-Performance Audio Engine
-    implementation 'com.google.mlkit:genai-speech-recognition:1.0.0-alpha1'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.19.1'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.19.1'
-
+    implementation 'com.google.android.play:integrity:1.3.0'
     implementation 'com.google.android.play:core:1.10.3'
-    implementation 'org.nanohttpd:nanohttpd:2.3.1'
 
+    // Google AI, Voice, and Object Detection
+    implementation 'com.google.mlkit:genai-speech-recognition:1.0.0-alpha1'
     implementation 'com.google.ai.client.generativeai:generativeai:0.2.0'
     implementation 'com.google.mlkit:vision-common:17.3.0'
     implementation 'com.google.mlkit:object-detection:17.0.0'
 
-    // পুরোনো লাইব্রেরির বদলে নতুন ও সচল লাইব্রেরি বসানো হলো
+    // Audio & Local Servers (NanoHTTPD for offline web view or data sharing)
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.19.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.19.1'
+    implementation 'org.nanohttpd:nanohttpd:2.3.1'
+
+    // WebRTC for Offline/Online calling & Encryption
     implementation 'com.infobip:google-webrtc:1.0.0035529'
-
     implementation 'androidx.security:security-crypto:1.1.0-alpha06'
-    implementation 'com.google.android.play:integrity:1.3.0'
 
+    // Room Database & Background Work (Offline Data Storage)
     implementation 'androidx.room:room-runtime:2.6.1'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
-
     implementation 'androidx.work:work-runtime:2.9.0'
+
+    // Networking (Retrofit & OkHttp)
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 
+    // Testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
