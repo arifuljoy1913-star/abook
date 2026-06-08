@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        // সরাসরি গুগলের সার্ভার থেকে প্লাগইনটি ডাউনলোড করার লিঙ্ক
+        // Android Gradle Plugin Version (Modern and Compatible)
         classpath 'com.android.tools.build:gradle:8.2.2'
     }
 }
@@ -14,4 +14,8 @@ allprojects {
         google()
         mavenCentral()
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
