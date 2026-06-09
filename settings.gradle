@@ -1,4 +1,4 @@
-espluginManagement {
+pluginManagement {
     repositories {
         google()
         mavenCentral()
@@ -6,12 +6,12 @@ espluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' } // অফলাইন মেস লাইব্রেরির রুট গেটওয়ে
     }
 }
-
 rootProject.name = "abook"
 include ':app'
