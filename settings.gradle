@@ -1,3 +1,4 @@
+
 pluginManagement {
     repositories {
         google()
@@ -10,8 +11,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' } // অফলাইন মেস লাইব্রেরির রুট গেটওয়ে
     }
 }
-rootProject.name = "abook"
+
+// ⚡ আপনার বিশ্ব কাঁপানো প্রজেক্টের আসল গ্লোবাল নাম এখানে চূড়ান্ত করা হলো
+rootProject.name = "Net One"
 include ':app'
