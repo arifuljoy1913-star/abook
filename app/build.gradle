@@ -1,27 +1,29 @@
 plugins {
     id 'com.android.application'
-    id 'androidx.room' version '2.6.1' // আপনার কঙ্কালের রুম ডিবি অটো-কম্পাইলার
+    id 'android.room' version '2.6.1' // অফলাইন ডেটাবেসের জন্য রুম প্লাগইন
 }
 
 android {
-    namespace 'com.smartvillage.asnanimesh.ultimate'
+    namespace 'net.one.app'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.smartvillage.asnanimesh.ultimate"
-        minSdk 26 // অ্যান্ড্রয়েড ৯ থেকে শুরু করে ফিউচার ওএস ব্যাকওয়ার্ড সাপোর্ট
+        applicationId "net.one.app"
+        minSdk 26 // অ্যান্ড্রয়েড ৮ থেকে শুরু করে ইন্ডিয়া বা বিশ্বব্যাপী সব ডিভাইসের সাপোর্ট
         targetSdk 34
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled true // কোড অবফাসকেশন ও R8 ডেক্স-প্রোটেকশন লক
+            minifyEnabled true // কোড অপ্টিমাইজেশন ও সিকিউরিটির জন্য
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -33,19 +35,19 @@ dependencies {
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    // ১. গুগলের অফিশিয়াল জেনারেティブ এআই জেমিনি মডিউল
+    // ১. গুগলের জেনারেটিভ এআই মডিউল
     implementation 'com.google.ai.client.generativeai:generativeai:0.2.2'
 
-    // ২. গুগলের অফিশিয়াল অফলাইন মেস কানেকশন ইঞ্জিন
+    // ২. অফলাইন অফ-গ্রিড পি২পি ডেটা কম্যুনিকেশন মডিউল
     implementation 'com.google.android.gms:play-services-nearby:18.7.0'
 
-    // ৩. রিয়েল-টাইম অফলাইন ডাটাবেজ (রুম ডিবি) এবং টাইম-টু-লাইভ (TTL) স্ক্রিপ্টিং
+    // ৩. রিয়েল-টাইম লোকাল ডেটাবেস (রুম) মডিউল
     implementation 'androidx.room:room-runtime:2.6.1'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
 
-    // ৪. মিলিশিয়া-গ্রেড সিকিউরিটি ও হার্ডওয়্যার-ব্যাকড ক্রিপ্টোগ্রাফি (Keystore System)
+    // ৪. সিকিউরিটি এবং ক্রিপ্টোগ্রাফি মডিউল
     implementation 'androidx.security:security-crypto:1.1.0-alpha06'
 
-    // ৫. লোকাল প্রক্সি হোস্টিং ও সকেট সার্ভার (ডান হাত-বাম হাত ডাটা পাইপলাইন)
+    // ৫. লোকাল অফলাইন হোস্ট/সার্ভার মডিউল (লোকাল ডেটা শেয়ারিং এর জন্য)
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
 }
